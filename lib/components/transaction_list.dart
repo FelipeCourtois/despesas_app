@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
+import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> _transactions;
+  final List<Transaction> transactions;
 
-  TransactionList(this._transactions);
+  TransactionList(this.transactions);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      child: SingleChildScrollView(
-        child: Column(
-          children: _transactions.map((tr) {
+      child: ListView.builder(
+          itemCount: transactions.length,
+          itemBuilder: (ctx, index) {
+            final tr = transactions[index];
             return Card(
                 child: Row(
               children: [
@@ -49,15 +51,15 @@ class TransactionList extends StatelessWidget {
                     ),
                     Text(
                       DateFormat('d MMM y').format(tr.date),
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 )
               ],
             ));
-          }).toList(), //converte numa lista
-        ),
-      ),
+          }),
     );
   }
 }
