@@ -11,8 +11,32 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final ThemeData tema = ThemeData();
+     Color c1 = const Color((0x5f3711)).withOpacity(1);
+     Color c2 = const Color((0xd4c098)).withOpacity(1);
     return MaterialApp(
       home: MyHomePage(),
+          theme: tema.copyWith(
+            colorScheme: tema.colorScheme.copyWith(
+              primary: c1,
+              secondary: c2,
+            ),
+            textTheme: tema.textTheme.copyWith(
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            appBarTheme: AppBarTheme(
+              titleTextStyle: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
     );
   }
 }
@@ -47,6 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _transactions.add(newTransaction);
     });
+
+    Navigator.of(context).pop();
   }
 
   _openTransactionFormModal(BuildContext context) {
@@ -76,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
+                  width: double.infinity,
               child: Card(
                 color: Colors.blue,
                 child: Text('Gráfico'),

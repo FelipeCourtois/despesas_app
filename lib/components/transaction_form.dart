@@ -53,7 +53,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   },
                   child: Text('Nova Transação'),
                   style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.purple,
+                      foregroundColor: Theme.of(context).colorScheme.primary,
                       backgroundColor: Colors.white,
                       elevation: 0),
                 ),
