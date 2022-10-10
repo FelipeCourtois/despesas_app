@@ -1,11 +1,13 @@
+import 'package:app_despesas/components/chart_bar.dart';
 import 'package:app_despesas/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransaction;
 
-  Chart(this.recentTransaction);
+  const Chart(this.recentTransaction, {Key? key}) : super(key: key);
 
   List<Map<String, Object>> get groupedTransactions {
     return List.generate(7, (index) {
@@ -16,7 +18,7 @@ class Chart extends StatelessWidget {
       double totalSum = 0.0;
 
       for (var i = 0; i < recentTransaction.length; i++) {
-        bool sameDay = recentTransaction[i].date.day == weekDay.day; //vai comparar
+        bool sameDay = recentTransaction[i].date.day == weekDay.day;
         bool sameMonth = recentTransaction[i].date.month == weekDay.month;
         bool sameYear = recentTransaction[i].date.year == weekDay.year;
 
@@ -25,11 +27,8 @@ class Chart extends StatelessWidget {
         }
       }
 
-
-
       return {
-        'day': DateFormat.E()
-            .format(weekDay)[0], //vai pegar a primeira letra do dia da semana
+        'day': DateFormat.E().format(weekDay)[0],
         'value': totalSum,
       };
     });
@@ -42,8 +41,12 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Row(
-        children: groupedTransactions.map((tr){
-          return Text('${tr['day']}: ${tr['value']}');
+        children: groupedTransactions.map((tr) {
+          return ChartBar(
+            label: tr['day'] as String,
+            value: tr['value'] as double,
+            percentage: 0,
+          );
         }).toList(),
       ),
     );
