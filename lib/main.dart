@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import '../models/transaction.dart';
 import 'components/transaction_list.dart';
-import 'components/chart.dart';
+
 
 main() => runApp(ExpensesApp());
 
@@ -50,20 +50,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction>_transactions = [
-    Transaction(
-      id: 't0',
-      title: 'conta antiga',
-      value: 400.76,
-      date: DateTime.now().subtract(Duration(days: 33)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de luz',
-      value: 211.30,
-      date: DateTime.now().subtract(Duration(days: 4)),
-    ),
-  ];
+  final List<Transaction>_transactions = [];
 
   List<Transaction> get _recentTransactions{
     return _transactions.where((tr) {//where ou filter, é muito comum
@@ -73,18 +60,26 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(), //forma de gerar um valor aleatório
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
     setState(() {
       _transactions.add(newTransaction);
     });
 
     Navigator.of(context).pop();
+  }
+
+  _deleteTransaction(String id){
+    setState(() {
+      _transactions.removeWhere((tr){
+        return tr.id == id;
+      });
+    });
   }
 
   _openTransactionFormModal(BuildContext context) {
@@ -114,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransactions),
-            TransactionList(_transactions),
+            TransactionList(_transactions, _deleteTransaction),
           ],
         ),
       ),

@@ -1,5 +1,3 @@
-import 'package:app_despesas/components/chart_bar.dart';
-import 'package:app_despesas/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
@@ -43,12 +41,11 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactions.map((tr) {
@@ -57,7 +54,9 @@ class Chart extends StatelessWidget {
               child: ChartBar(
                 label: tr['day'] as String,
                 value: tr['value'] as double,
-                percentage: (tr['value'] as double) / _weekTotalValue,
+                percentage: _weekTotalValue == 0
+                    ? 0
+                    : (tr['value'] as double) / _weekTotalValue,
               ),
             );
           }).toList(),
