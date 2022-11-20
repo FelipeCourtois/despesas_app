@@ -16,7 +16,7 @@ class ExpensesApp extends StatelessWidget {
     Color c1 = const Color((0x5f3711)).withOpacity(1);
     Color c2 = const Color((0xd4c098)).withOpacity(1);
     return MaterialApp(
-      home:  MyHomePage(),
+      home: MyHomePage(),
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: c1,
@@ -94,7 +94,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Despesas pessoais'),
+      title: Text(
+        'Despesas pessoais',
+        style: TextStyle(
+          fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+        ),
+      ),
       actions: [
         IconButton(
             onPressed: () => _openTransactionFormModal(context),
@@ -115,11 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: availableHeight * 0.3,
+              height: availableHeight * 0.30,
               child: Chart(_recentTransactions),
             ),
             SizedBox(
-              height: availableHeight * 0.7,
+              height: availableHeight * 0.70,
               child: TransactionList(_transactions, _removeTransaction),
             ),
           ],
