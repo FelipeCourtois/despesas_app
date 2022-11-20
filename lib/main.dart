@@ -5,7 +5,6 @@ import 'dart:math';
 import '../models/transaction.dart';
 import 'components/transaction_list.dart';
 
-
 main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
@@ -13,33 +12,32 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final ThemeData tema = ThemeData();
-     Color c1 = const Color((0x5f3711)).withOpacity(1);
-     Color c2 = const Color((0xd4c098)).withOpacity(1);
+    final ThemeData tema = ThemeData();
+    Color c1 = const Color((0x5f3711)).withOpacity(1);
+    Color c2 = const Color((0xd4c098)).withOpacity(1);
     return MaterialApp(
-      home: MyHomePage(),
-          theme: tema.copyWith(
-            colorScheme: tema.colorScheme.copyWith(
-              primary: c1,
-              secondary: c2,
-            ),
-            textTheme: tema.textTheme.copyWith(
-              headline6: TextStyle(
-                fontFamily: 'Quicksand',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            appBarTheme: AppBarTheme(
-              titleTextStyle: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white
-              ),
-            ),
+      home:  MyHomePage(),
+      theme: tema.copyWith(
+        colorScheme: tema.colorScheme.copyWith(
+          primary: c1,
+          secondary: c2,
+        ),
+        textTheme: tema.textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'Quicksand',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
+        ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
+      ),
     );
   }
 }
@@ -50,12 +48,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction>_transactions = [];
+  final List<Transaction> _transactions = [];
 
-  List<Transaction> get _recentTransactions{
-    return _transactions.where((tr) {//where ou filter, é muito comum
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      //where ou filter, é muito comum
       return tr.date.isAfter(DateTime.now().subtract(
-        Duration(days: 7),//pega data de agora, subtrai 7 dias, se estiver nos últimos 7 dias essa transação precisa estar na lista final
+        const Duration(days: 7),
       ));
     }).toList();
   }
@@ -67,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       value: value,
       date: date,
     );
+
     setState(() {
       _transactions.add(newTransaction);
     });
@@ -74,9 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
-  _deleteTransaction(String id){
+  _removeTransaction(String id) {
     setState(() {
-      _transactions.removeWhere((tr){
+      _transactions.removeWhere((tr) {
         return tr.id == id;
       });
     });
@@ -93,28 +93,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Despesas pessoais'),
+      actions: [
+        IconButton(
+            onPressed: () => _openTransactionFormModal(context),
+            icon: Icon(
+              Icons.add,
+            ))
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Despesas pessoais'),
-        actions: [
-          IconButton(
-              onPressed: () => _openTransactionFormModal(context),
-              icon: Icon(
-                Icons.add,
-              ))
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions, _deleteTransaction),
+            SizedBox(
+              height: availableHeight * 0.3,
+              child: Chart(_recentTransactions),
+            ),
+            SizedBox(
+              height: availableHeight * 0.7,
+              child: TransactionList(_transactions, _removeTransaction),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => _openTransactionFormModal(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
