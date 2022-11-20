@@ -94,6 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool islandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final appBar = AppBar(
       title: Text(
         'Despesas pessoais',
@@ -120,25 +122,26 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Exibir gráfico"),
-                Switch(
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    }),
-              ],
-            ),
-            if (_showChart)
+            if (islandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Exibir gráfico"),
+                  Switch(
+                      value: _showChart,
+                      onChanged: (value) {
+                        setState(() {
+                          _showChart = value;
+                        });
+                      }),
+                ],
+              ),
+            if (_showChart || !islandscape)
               SizedBox(
-                height: availableHeight * 0.30,
+                height: availableHeight * ((islandscape ? 0.7 : 0.30)),
                 child: Chart(_recentTransactions),
               ),
-            if (!_showChart)
+            if (!_showChart || !islandscape)
               SizedBox(
                 height: availableHeight * 0.70,
                 child: TransactionList(_transactions, _removeTransaction),
