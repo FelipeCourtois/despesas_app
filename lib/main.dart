@@ -132,20 +132,20 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (islandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Exibir gráfico"),
-                  Switch(
-                      value: _showChart,
-                      onChanged: (value) {
-                        setState(() {
-                          _showChart = value;
-                        });
-                      }),
-                ],
-              ),
+            // if (islandscape)
+            //   Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Text("Exibir gráfico"),
+            //       Switch(
+            //           value: _showChart,
+            //           onChanged: (value) {
+            //             setState(() {
+            //               _showChart = value;
+            //             });
+            //           }),
+            //     ],
+            //   ),
             if (_showChart || !islandscape)
               SizedBox(
                 height: availableHeight * ((islandscape ? 0.7 : 0.30)),
