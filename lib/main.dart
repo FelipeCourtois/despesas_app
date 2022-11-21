@@ -104,11 +104,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       actions: [
+        if(islandscape)
+        IconButton(
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+            icon: Icon(
+              _showChart ? Icons.list : Icons.pie_chart,
+            )),
         IconButton(
             onPressed: () => _openTransactionFormModal(context),
             icon: Icon(
               Icons.add,
-            ))
+            )),
       ],
     );
 
